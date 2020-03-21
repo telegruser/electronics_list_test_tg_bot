@@ -1,6 +1,5 @@
 import logging
 import sys
-from datetime import datetime
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -39,8 +38,8 @@ times = (
 )
 
 
-def get_time_welcome() -> str:
-    return times[datetime.now().hour // 6]
+def get_time_welcome(date) -> str:
+    return times[date.hour // 6]
 
 
 def init_logger(name, debug=False) -> logging.Logger:
