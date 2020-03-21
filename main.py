@@ -25,10 +25,10 @@ bot = Bot(API_TOKEN, proxy=PROXY) if LOCAL_MODE else Bot(API_TOKEN)
 dispatcher = Dispatcher(bot)
 
 
-async def send_start_message(message):
+async def send_start_message(user_id):
     await bot.send_message(
-        message.from_user.id,
-        util.get_time_welcome(message.date),
+        user_id,
+        util.get_time_welcome(),
         reply_markup=InlineKeyboardMarkup()
             .add(InlineKeyboardButton('Список производителей электроники:', callback_data='get_electronics_list'))
     )
@@ -37,7 +37,7 @@ async def send_start_message(message):
 @dispatcher.message_handler(commands='start')
 async def cmd_start(message: Message):
     logger.info(f'User {message.from_user.id} -> "{message.text}"')
-    await send_start_message(message)
+    await send_start_message(message.from_user.id)
 
 
 @dispatcher.callback_query_handler(lambda callback_query: callback_query.data.startswith('get_electronics_list'))
@@ -74,7 +74,7 @@ async def cq_get_pag_list(callback_query: CallbackQuery):
             await callback_query.message.delete()
         except MessageToDeleteNotFound:
             pass
-        await send_start_message(callback_query)
+        await send_start_message(callback_query.from_user.id)
 
     elif query == 'select':
         # код при выборе поставщика

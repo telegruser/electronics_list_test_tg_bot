@@ -1,7 +1,9 @@
 import logging
 import sys
+from datetime import datetime
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import pytz
 
 
 electronics_list = ['Apple', 'Samsung', 'Nokia', 'Sony', 'Canon', 'Panasonic', 'Bose', 'Microsoft', 'LG', 'Intel',
@@ -38,7 +40,9 @@ times = (
 )
 
 
-def get_time_welcome(date) -> str:
+def get_time_welcome() -> str:
+    tz_moscow = pytz.timezone('Europe/Moscow')
+    date = datetime.now(tz_moscow)
     return times[date.hour // 6]
 
 
