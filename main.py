@@ -90,6 +90,8 @@ if __name__ == '__main__':
 
     elif CONNECTION_TYPE == 'webhook':
         logger.info('Connection mode: webhook.')
+        await bot.delete_webhook()
+        await bot.set_webhook(WEBHOOK_URL)
         executor.start_webhook(
             dispatcher=dispatcher,
             webhook_path=WEBHOOK_PATH,
