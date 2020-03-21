@@ -81,6 +81,11 @@ async def cq_get_pag_list(callback_query: CallbackQuery):
         pass
 
 
+async def on_startup(*args, **kwargs):
+    await bot.delete_webhook()
+    await bot.set_webhook(WEBHOOK_URL)
+
+
 if __name__ == '__main__':
     logger.info('Starting..')
 
@@ -90,11 +95,10 @@ if __name__ == '__main__':
 
     elif CONNECTION_TYPE == 'webhook':
         logger.info('Connection mode: webhook.')
-        await bot.delete_webhook()
-        await bot.set_webhook(WEBHOOK_URL)
         executor.start_webhook(
             dispatcher=dispatcher,
             webhook_path=WEBHOOK_PATH,
+            on_startup=on_startup,
             skip_updates=True,
             host='0.0.0.0',
             port=int(os.getenv('PORT', 5000))
